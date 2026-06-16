@@ -9,6 +9,7 @@ Python reproduction of the LightGBM-Tweedie weekly demand forecasting pipeline, 
 | `pharmacy_pipeline.py` | Build weekly panel, ADI/CV labels, train/test split, negative-value audit |
 | `feature_engineering.py` | Lag/rolling features, static merges, `WeeklyPredictor` for online inference |
 | `benchmark_eval.py` | Main entry: grid search, benchmarks (RF, SBA, optional ARIMA/LSTM), tables & figures |
+| `feature_selection_analysis.py` | Feature importance, correlation matrix, ACF/PACF diagnostics |
 | `xlsx_weekly_io.py` | Stream-read hospital dispensing Excel exports |
 | `xlsx_to_weekly_csv.py` | CLI to aggregate Excel → `data/weekly_from_xlsx.csv` |
 
@@ -63,6 +64,8 @@ python benchmark_eval.py --financial-only              # AI vs manual orders
 python benchmark_eval.py --negative-rows-sensitivity # negative-row handling
 python benchmark_eval.py --zero-week-ablation        # zero-week training ablation
 python benchmark_eval.py --no-grid                     # skip hyperparameter grid search
+python benchmark_eval.py --feature-selection           # feature-selection figures
+python feature_selection_analysis.py                   # same as --feature-selection
 ```
 
 Results are written to `outputs/` by default (`--output-dir` to override).
@@ -75,6 +78,8 @@ Results are written to `outputs/` by default (`--output-dir` to override).
 - `predictions_test_weekly.csv` — per drug-week predictions on 2024 holdout
 - `validation_holdout_rationale.md` — holdout design narrative (with `--validation-sensitivity`)
 - `table_financial_*.csv` — financial validation (with `--financial-only` and `real_orders.csv`)
+- `fig_feature_importance.png`, `fig_feature_correlation.png`, `fig_acf_pacf_by_pattern.png` — feature-selection diagnostics (with `--feature-selection`)
+- `table_feature_selection_summary.csv`, `feature_selection_rationale.md` — importance + Spearman summary
 
 ## Modeling defaults
 

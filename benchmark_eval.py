@@ -1730,6 +1730,7 @@ def main() -> None:
     ap.add_argument("--validation-sensitivity", action="store_true", help="Temporal validation: rolling-origin + 2025 holdout")
     ap.add_argument("--financial-only", action="store_true", help="Financial validation only (AI vs manual orders)")
     ap.add_argument("--pos-only-train", action="store_true", help="Legacy: train on positive-demand weeks only")
+    ap.add_argument("--feature-selection", action="store_true", help="Feature-selection diagnostics (importance, correlation, ACF/PACF)")
     ap.add_argument("--arima-workers", type=int, default=1)
     args = ap.parse_args()
     bcfg = BenchmarkConfig(
@@ -1760,6 +1761,11 @@ def main() -> None:
         return
     if args.financial_only:
         run_financial_only(bcfg)
+        return
+    if args.feature_selection:
+        from feature_selection_analysis import run_feature_selection_analysis
+
+        run_feature_selection_analysis(Path(os.path.dirname(os.path.abspath(__file__))) / bcfg.output_dir)
         return
     run_benchmarks(bcfg)
 
